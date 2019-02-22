@@ -6,6 +6,7 @@ const webpackMerge = require('webpack-merge');
 const config = require('./env');
 const utils = require('./utils');
 const nodeExternals = require('webpack-node-externals');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const DEV_MODE = config.isDevMode();
 const APP_PATH = utils.APP_PATH;
@@ -31,7 +32,12 @@ const webpackConfig = webpackMerge(
       libraryExport: 'default',
       libraryTarget: 'commonjs2',
     },
-    externals: [nodeExternals()],
+    externals: [
+      nodeExternals({
+        // whitelist: [/\.(sa|sc|c)ss$/],
+        whitelist: [/\.(?!(?:jsx?|json)$).{1,5}$/i],
+      }),
+    ],
     resolve: {
       ...utils.getWebpackResolveConfig(),
     },
@@ -61,12 +67,14 @@ const webpackConfig = webpackMerge(
           context: APP_PATH,
         },
       }),
-      // new MiniCssExtractPlugin({
-      //   filename: "[name].css",
-      //   chunkFilename: "[id].css"
-      // }),
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[id].css',
+      }),
     ],
   }
 );
+
+console.log('webpackConfig: ', webpackConfig.module);
 
 module.exports = webpackConfig;

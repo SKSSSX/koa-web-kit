@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-
+import 'antd/dist/antd.css';
+import { DatePicker, message } from 'antd';
 // import s from './Home.scss'; //CSS_MODULES
 import './Home.scss';
 
@@ -53,6 +54,7 @@ class Home extends React.Component {
             {this.state.error.msg}
           </a>
         </div>
+        <DatePicker />
       </div>
     );
   }
